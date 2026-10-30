@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>#4471 split · three problems, not one · support kb</title>
+<title>#4471 split · two problems, not one · support kb</title>
 <style>
   :root {
     --bg: #fbfaf7; --fg: #1d1d1b; --muted: #6b6a66; --line: #e3e0d8;
@@ -33,20 +33,19 @@
 .stamp{margin:2rem 0 0;font:.85rem var(--mono);color:var(--muted)}.stamp b{color:var(--accent);letter-spacing:.04em}
 .kb{overflow-wrap:anywhere}table{display:block;overflow-x:auto}
 </style></head><body>
-<div class="kb"><header><a class="crumb" href="/kb">support desk · kb</a><h1>#4471 split · three problems, not one</h1>
+<div class="kb"><header><a class="crumb" href="/kb">support desk · kb</a><h1>#4471 split · two problems, not one</h1>
 <p class="meta"><span>owner <b>jessesampl</b></span><span class="status open">open</span><span>reviewed 2026-10-30 · 0 days ago</span></p></header>
 <main>
-<p><a href="/kb/incidents/4471">#4471</a> says one issue, one fix queued. Read report by report, it is three problems. The queued parser fix closes only the first one.</p>
+<p><a href="/kb/incidents/4471">#4471</a> says one issue, one fix queued. Read report by report, it is two problems. The queued parser fix closes only the first one.</p>
 <aside class="callout">Not one issue. Each problem below now has its own ticket, with the reports it covers.</aside>
 <h2>The split</h2>
-<p class="sum"><strong>412</strong> reports in #4471 (427 export rows, counted once by id) · <strong>3</strong> problems</p>
+<p class="sum"><strong>412</strong> reports in #4471 (427 export rows, counted once by id) · <strong>2</strong> problems</p>
 <table><thead><tr><th>problem</th><th>reports</th><th>tenants</th><th>channels</th><th>seen</th><th>ticket</th></tr></thead><tbody>
-<tr><td><code>parser</code></td><td>374</td><td>11</td><td class="muted">app ×202 · email ×147 · form ×25</td><td>2026-04-01 → 2026-10-04</td><td><a href="https://github.com/jessesampl/mega-s01e03/issues/1">#1</a></td></tr>
+<tr><td><code>parser</code></td><td>379</td><td>11</td><td class="muted">app ×204 · email ×150 · form ×25</td><td>2026-04-01 → 2026-10-04</td><td><a href="https://github.com/jessesampl/mega-s01e03/issues/1">#1</a></td></tr>
 <tr><td><code>hint</code></td><td>33</td><td>3</td><td class="muted">form ×33</td><td>2026-04-17 → 2026-09-22</td><td><a href="https://github.com/jessesampl/mega-s01e03/issues/2">#2</a></td></tr>
-<tr><td><code>one-day</code></td><td>5</td><td>5</td><td class="muted">email ×3 · app ×2</td><td>2026-04-02 → 2026-10-04</td><td><a href="https://github.com/jessesampl/mega-s01e03/issues/3">#3</a></td></tr>
 </tbody></table>
 <h2>How each report was placed</h2>
-<ul><li><strong><code>parser</code></strong>: the shared parser reads every date month first. Every tenant on file writes the day first, so 7 April comes back as 4 July. Placed by tenant locale (<code>causes.ts</code>).</li><li><strong><code>hint</code></strong>: booking-v3's form prints <code>MM/DD/YYYY</code> under its date field. People type what it says, and the form reads it the tenant's way, day first. Only form reports from booking-v3 tenants. The parser fix does not touch it: the fix is the hint, or the form reading what it asks for.</li><li><strong><code>one-day</code></strong>: the date moves by one day, not a day and month swap: "Tuesday 6 October showed as Monday", Lisbon and Toronto got different days for one meeting. That is a timezone or day-boundary bug. The desk already noted these reports (<code>desk-notes.json</code>), but the #4471 table still files them under <code>parser</code>.</li></ul>
+<ul><li><strong><code>parser</code></strong>: the shared parser reads every date month first. Every tenant on file writes the day first, so 7 April comes back as 4 July. Placed by tenant locale (<code>causes.ts</code>). This includes the reports the desk read as a one-day move (<code>desk-notes.json</code>): they come from the same tenants and channels, and the #4471 page files them here too.</li><li><strong><code>hint</code></strong>: booking-v3's form prints <code>MM/DD/YYYY</code> under its date field. People type what it says, and the form reads it the tenant's way, day first. Only form reports from booking-v3 tenants. The parser fix does not touch it: the fix is the hint, or the form reading what it asks for.</li></ul>
 <h2>What the #4471 page shows instead</h2>
 <p class="sum"><strong>412</strong> reports merged into #4471 · <strong>2</strong> causes</p>
 <table><thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th></th></tr></thead><tbody>
@@ -54,7 +53,7 @@
 <tr class="wrong"><td><code>hint</code></td><td>33</td><td class="muted">hint ×18 · parser ×15</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td>not this ticket — no ticket of its own</td></tr>
 </tbody></table>
 <p class="muted">5 reports read as a one-day move; filed under <code>parser</code> by tenant.</p>
-<ul><li>It groups by two causes, so the one-day reports sit inside <code>parser</code>, with a footnote.</li><li>Intake's tags disagree with the cause on 38 reports. Count by tenant and channel, not by tag.</li><li>The export repeats 15 rows. Count by id: 412, not 427.</li><li><a href="/kb/triage/dedupe">Triage</a> merges on subject alone (<a href="/kb/decisions/0001-dedupe-by-subject">decision 0001</a>). Subjects such as "Date is wrong" fit all three problems, which is how they ended up in one ticket. That page was last reviewed in June 2024.</li></ul>
+<ul><li>The table already counts two causes. The text above it says one issue, and <code>hint</code> has no ticket of its own.</li><li>Intake's tags disagree with the cause on 38 reports. Count by tenant and channel, not by tag.</li><li>The export repeats 15 rows. Count by id: 412, not 427.</li><li><a href="/kb/triage/dedupe">Triage</a> merges on subject alone (<a href="/kb/decisions/0001-dedupe-by-subject">decision 0001</a>). Subjects such as "Date is wrong" fit both problems, which is how they ended up in one ticket. That page was last reviewed in June 2024.</li></ul>
 <p class="stamp">desk ref <b>DR-S6KH-0H08</b></p>
 </main>
 <footer>Pages are written by people. Tables and charts are built from data at render time.</footer></div>

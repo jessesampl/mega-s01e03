@@ -1,6 +1,5 @@
 <script lang="ts">
   import reports from '#lib/data/reports-4471.json';
-  import notes from '#lib/data/desk-notes.json';
   import { splitTicket, type Problem } from '#lib/kb/problems';
   import { tenantOf } from '#lib/kb/locales';
   import type { Report } from '#lib/kb/causes';
@@ -8,7 +7,7 @@
   // `tickets`: where each problem is tracked now, problem → URL.
   let { ticket, tickets = {} }: { ticket: number; tickets?: Partial<Record<Problem, string>> } = $props();
 
-  const split = $derived(splitTicket(reports as Report[], ticket, tenantOf, notes.oneDayMove));
+  const split = $derived(splitTicket(reports as Report[], ticket, tenantOf));
   const channels = (c: Record<string, number>) =>
     Object.entries(c)
       .sort((a, b) => b[1] - a[1])

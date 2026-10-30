@@ -1,13 +1,11 @@
 // What #4471 holds once each report is placed by what actually went wrong, not by subject.
-// causes.ts places a report by its tenant; the desk's own notes (desk-notes.json) pick out the
-// reports whose date moved by one day, which no day-first tenant explains.
-import { causeOf, uniqueById, type Report, type Tenant } from '#lib/kb/causes';
+// A report's problem is its cause (causes.ts): placed by tenant and channel, never by intake's tag.
+// Reports the desk read as a one-day move (desk-notes.json) stay with their cause, as on #4471.
+import { causeOf, uniqueById, type Cause, type Report, type Tenant } from '#lib/kb/causes';
 
-export type Problem = 'parser' | 'hint' | 'one-day' | 'unplaced';
-export const PROBLEMS: readonly Problem[] = ['parser', 'hint', 'one-day', 'unplaced'];
+export type Problem = Cause | 'unplaced';
 
-export function problemOf(r: Report, t: Tenant | undefined, oneDayMove: readonly string[]): Problem {
-  if (oneDayMove.includes(r.id)) return 'one-day';
+export function problemOf(r: Report, t: Tenant | undefined): Problem {
   return causeOf(r, t) ?? 'unplaced';
 }
 
@@ -23,16 +21,11 @@ export type ProblemGroup = {
 export type Split = { rows: number; unique: number; groups: ProblemGroup[] };
 
 // Every report merged into `ticket`, counted once, grouped by problem, biggest first.
-export function splitTicket(
-  rows: Report[],
-  ticket: number,
-  tenantOf: (r: Report) => Tenant | undefined,
-  oneDayMove: readonly string[],
-): Split {
+export function splitTicket(rows: Report[], ticket: number, tenantOf: (r: Report) => Tenant | undefined): Split {
   const merged = uniqueById(rows).filter((r) => r.mergedInto === ticket);
   const byProblem = new Map<Problem, Report[]>();
   for (const r of merged) {
-    const p = problemOf(r, tenantOf(r), oneDayMove);
+    const p = problemOf(r, tenantOf(r));
     byProblem.set(p, [...(byProblem.get(p) ?? []), r]);
   }
   const groups = [...byProblem.entries()]
