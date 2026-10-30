@@ -4,7 +4,7 @@ title: '#4471 split · two problems, not one'
 owner: jessesampl
 status: open
 reviewed: 2026-10-30
-signature: jessesampl
+signature: v1.eyJzdWIiOiI0MTYzIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMzNTY5MTMsImV4cCI6MTc5MzQ0MzMxM30.-8G7zpHFHTpmn1G5L7bz9CRZRij-X3bdm7E0v2BtA5s
 ---
 
 <script>
