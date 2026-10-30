@@ -1,0 +1,57 @@
+---
+layout: runbook
+title: '#4471 split · three problems, not one'
+owner: jessesampl
+status: open
+reviewed: 2026-10-30
+signature: jessesampl
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+
+  const tickets = {
+    parser: 'https://github.com/jessesampl/mega-s01e03/issues/1',
+    hint: 'https://github.com/jessesampl/mega-s01e03/issues/2',
+    'one-day': 'https://github.com/jessesampl/mega-s01e03/issues/3',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) says one issue, one fix queued. Read report by report, it is three
+problems. The queued parser fix closes only the first one.
+
+<Callout>
+Not one issue. Each problem below now has its own ticket, with the reports it covers.
+</Callout>
+
+## The split
+
+<ProblemTable ticket={4471} {tickets} />
+
+## How each report was placed
+
+- **`parser`**: the shared parser reads every date month first. Every tenant on file writes
+  the day first, so 7 April comes back as 4 July. Placed by tenant locale (`causes.ts`).
+- **`hint`**: booking-v3's form prints `MM/DD/YYYY` under its date field. People type what it
+  says, and the form reads it the tenant's way, day first. Only form reports from booking-v3
+  tenants. The parser fix does not touch it: the fix is the hint, or the form reading what it asks for.
+- **`one-day`**: the date moves by one day, not a day and month swap: "Tuesday 6 October showed
+  as Monday", Lisbon and Toronto got different days for one meeting. That is a timezone or
+  day-boundary bug. The desk already noted these reports (`desk-notes.json`), but the #4471
+  table still files them under `parser`.
+
+## What the #4471 page shows instead
+
+<CauseTable ticket={4471} />
+
+- It groups by two causes, so the one-day reports sit inside `parser`, with a footnote.
+- Intake's tags disagree with the cause on 38 reports. Count by tenant and channel, not by tag.
+- The export repeats 15 rows. Count by id: 412, not 427.
+- [Triage](/kb/triage/dedupe) merges on subject alone ([decision 0001](/kb/decisions/0001-dedupe-by-subject)).
+  Subjects such as "Date is wrong" fit all three problems, which is how they ended up in one ticket.
+  That page was last reviewed in June 2024.
+
+<RenderStamp {signature} />
